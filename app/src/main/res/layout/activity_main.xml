@@ -2,15 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/login_background">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/rvsm_logo"/>
     <Button
         android:id="@+id/main_login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="login"/>
+        android:textColor="#ffffff"
+        android:text="login"
+        android:layout_marginTop="130dp"
+        android:backgroundTint="#C8E3FB"
+        android:layout_gravity="center"/>
     <Button
+        android:layout_marginTop="70dp"
         android:id="@+id/main_signup_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="signup"/>
+        android:textColor="#ffffff"
+        android:text="login"
+        android:backgroundTint="#C8E3FB"
+        android:layout_gravity="center"/>
 </LinearLayout>
