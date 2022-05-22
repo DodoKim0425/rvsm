@@ -5,12 +5,20 @@
     android:background="@drawable/login_background"
     android:orientation="vertical"
     >
-    <ImageView
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/back"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+        <ImageButton
+            android:id="@+id/login_back_btn"
+            android:layout_gravity="center_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitCenter"
+            android:background="#00ffffff"
+            android:src="@drawable/back"/>
+    </LinearLayout>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -18,7 +26,7 @@
         android:src="@drawable/rvsm_logo"/>
     <LinearLayout
         android:layout_marginTop="70dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,12 +34,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ID:"
+            android:text="ID"
             android:textSize="21dp"
             android:textColor="#BBDCFB"
             android:textStyle="bold"
             />
         <EditText
+            android:id="@+id/login_id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
@@ -42,7 +51,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="50dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -50,12 +59,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PW:"
+            android:text="PW"
             android:textStyle="bold"
             android:textSize="21dp"
             android:textColor="#BBDCFB"
-            android:typeface="sans"/>
+            />
         <EditText
+            android:id="@+id/login_pw_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
@@ -65,11 +75,12 @@
             />
     </LinearLayout>
     <Button
+        android:id="@+id/login_btn"
         android:layout_marginTop="40dp"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
-        android:text="sign up"
+        android:text="login"
         android:backgroundTint="#C8E3FB"
         android:layout_gravity="center"
         />

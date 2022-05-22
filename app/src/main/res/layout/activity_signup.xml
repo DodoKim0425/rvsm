@@ -43,7 +43,7 @@
             android:textStyle="bold"
             />
         <EditText
-            android:id="@+id/signup_id_tv"
+            android:id="@+id/signup_id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
@@ -60,7 +60,7 @@
             android:textColor="#BBDCFB"
             />
         <EditText
-            android:id="@+id/signup_pw_tv"
+            android:id="@+id/signup_pw_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
