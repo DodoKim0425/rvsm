@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -33,6 +34,10 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class ChartActivity extends AppCompatActivity {
+    private String patient_name;//환자이름
+    private String admin_name;//담당자이름
+    private String patient_id;//환자 id
+    private TextView tv_patient_name,tv_admin;
     private Socket mSocket;//소켓통신을 위한 소켓 객체
     private LineChart lineChart;//차트 전체
     private List<Entry> entryList1;//data1을 나타내는 데이터들
@@ -49,6 +54,9 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         chart_back_btn=findViewById(R.id.chart_back_btn);
+        tv_admin=findViewById(R.id.tv_admin);
+        tv_patient_name=findViewById(R.id.tv_patient_name);
+        patient_id="1";
         lineChart=findViewById(R.id.lineChart);
         entryList1=new ArrayList<Entry>();
         entryList2=new ArrayList<Entry>();
@@ -59,7 +67,8 @@ public class ChartActivity extends AppCompatActivity {
         Date date=new Date(cal.getTimeInMillis());
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String getTime=dateFormat.format(date);
-        last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다
+        //last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다 실제 테스트시 이 부분 사용함
+        last_time="2022-05-20 17:30:26";//aws 서버 db연결 테스트를 위한 임시코드입니다
         System.out.println("현재시간-5: "+last_time);
         chart_back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +77,7 @@ public class ChartActivity extends AppCompatActivity {
             }
         });
         connect();//연결
+
         feedMultiple();
 
     }
@@ -76,7 +86,7 @@ public class ChartActivity extends AppCompatActivity {
         try {
             System.out.println("연결시도");
             mSocket = IO.socket("http://13.125.227.19:3005");//서버 주소, 포트는 3005, 서버코드 합친 후 포트변경필요
-            //mSocket=IO.socket("http://10.0.2.2:3005");
+            //mSocket=IO.socket("http://10.0.2.2:3005");//로컬호스트에서 테스팅시 사용
             mSocket.connect();
             System.out.println("연결성공");
             Log.d("SOCKET", "Connection success : " + mSocket.id());
@@ -104,7 +114,37 @@ public class ChartActivity extends AppCompatActivity {
                     }
                 }
             });
+            mSocket.on("patient_info", new Emitter.Listener() {//데이터 받는 이벤트
+                @Override
+                public void call(Object... args) {
+                    try{
+                        JSONObject data=(JSONObject) args[0];
+                        admin_name=(data.getString("admin_name"));
+                        patient_name=(data.getString("patient_name"));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv_admin.setText(admin_name);
+                                tv_patient_name.setText(patient_name);
+                            }
+                        });
+                    }catch (Exception e){
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                Toast.makeText(getApplicationContext(), e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
 
+                            }
+                        }, 0);
+
+                    }
+                }
+            });
+            mSocket.emit("and_request_user_info",patient_id);
         } catch (Exception e) {
             System.out.println("연결실패");
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
@@ -118,6 +158,7 @@ public class ChartActivity extends AppCompatActivity {
         System.out.println("보낼시간: "+last_time);
         try {
             data.put("time",last_time);
+            data.put("patient_id","PATIENT_STATE");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -127,7 +168,7 @@ public class ChartActivity extends AppCompatActivity {
     void doJSONParser(JSONArray index){//서버로 부터 받은 jsonobject에서 파싱
 
         try{
-
+            last_time=index.getJSONObject(index.length()-1).getString("TIME");
             for (int i = 0; i < index.length(); i++) {
                 JSONObject jsonObject_data = index.getJSONObject(i);
                 entryList1.add(new Entry(time,Integer.parseInt(jsonObject_data.getString("HeartRate"))));
@@ -136,9 +177,9 @@ public class ChartActivity extends AppCompatActivity {
                 time++;
                 String[]arr=jsonObject_data.getString("TIME").split(" ");
                 xVals.add(arr[1]);
-                if(i==(index.length()-1)){
+                /*if(i==(index.length()-1)){
                     last_time=jsonObject_data.getString("TIME");
-                }
+                }*/
             }
             drawGraph();//그래프 그리기
         }
