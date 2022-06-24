@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
-        android:text="login"
+        android:text="sign up"
         android:backgroundTint="#C8E3FB"
         android:layout_gravity="center"/>
 </LinearLayout>
