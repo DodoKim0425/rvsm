@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
 }
-
+Properties properties=new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 android {
     compileSdk 31
 
@@ -14,6 +15,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "SERVER_URL", properties['server_url']
+        buildConfigField "String", "LOCAL_URL", properties['local_url']
     }
 
     buildTypes {
@@ -26,6 +30,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
