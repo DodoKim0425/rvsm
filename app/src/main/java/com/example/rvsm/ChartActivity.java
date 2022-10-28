@@ -50,7 +50,8 @@ public class ChartActivity extends AppCompatActivity {
     private String last_time;
     private ArrayList<String> xVals;//x축 날짜, 시간
     private ImageButton chart_back_btn;
-    private URI uri= URI.create("http://10.0.2.2:3333");
+    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
+    //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
     private IO.Options options;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +98,6 @@ public class ChartActivity extends AppCompatActivity {
         System.out.println("연결함수에 들어옴");
         try {
             System.out.println("연결시도");
-            //mSocket = IO.socket("https://13.125.227.19:3000");//서버 주소, 포트는 3005, 서버코드 합친 후 포트변경필요
-            //mSocket=IO.socket("https://10.0.2.2:3333");//로컬호스트에서 테스팅시 사용
             mSocket=IO.socket(uri,options);
             mSocket.connect();
             System.out.println("연결성공");
