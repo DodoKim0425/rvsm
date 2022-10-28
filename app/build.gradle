@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation ('io.socket:socket.io-client:2.0.1') { // excluding org.json which is provided by Android
+    implementation ('io.socket:socket.io-client:1.0.1') { // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json' }
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'

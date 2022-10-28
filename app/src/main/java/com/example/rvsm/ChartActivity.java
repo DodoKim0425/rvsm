@@ -24,12 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -50,6 +50,8 @@ public class ChartActivity extends AppCompatActivity {
     private String last_time;
     private ArrayList<String> xVals;//x축 날짜, 시간
     private ImageButton chart_back_btn;
+    private URI uri= URI.create("http://10.0.2.2:3333");
+    private IO.Options options;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,7 +65,7 @@ public class ChartActivity extends AppCompatActivity {
         chart_back_btn=findViewById(R.id.chart_back_btn);
         tv_admin=findViewById(R.id.tv_admin);
         tv_patient_name=findViewById(R.id.tv_patient_name);
-        patient_id="1";
+        patient_id="test1";
         lineChart=findViewById(R.id.lineChart);
         entryList1=new ArrayList<Entry>();
         entryList2=new ArrayList<Entry>();
@@ -74,9 +76,12 @@ public class ChartActivity extends AppCompatActivity {
         Date date=new Date(cal.getTimeInMillis());
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String getTime=dateFormat.format(date);
-        last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다 실제 테스트시 이 부분 사용함
-        //last_time="2022-06-11 12:30:26";//aws 서버 db연결 테스트를 위한 임시코드입니다
+        //last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다 실제 테스트시 이 부분 사용함
+        last_time="2022-06-11 12:30:26";//aws 서버 db연결 테스트를 위한 임시코드입니다
         System.out.println("현재시간-5: "+last_time);
+
+        options=new IO.Options();
+        options.transports=new String[]{"websocket"};
         chart_back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,13 +97,14 @@ public class ChartActivity extends AppCompatActivity {
         System.out.println("연결함수에 들어옴");
         try {
             System.out.println("연결시도");
-            mSocket = IO.socket("http://13.125.227.19:3000");//서버 주소, 포트는 3005, 서버코드 합친 후 포트변경필요
-            //mSocket=IO.socket("http://10.0.2.2:3005");//로컬호스트에서 테스팅시 사용
+            //mSocket = IO.socket("https://13.125.227.19:3000");//서버 주소, 포트는 3005, 서버코드 합친 후 포트변경필요
+            //mSocket=IO.socket("https://10.0.2.2:3333");//로컬호스트에서 테스팅시 사용
+            mSocket=IO.socket(uri,options);
             mSocket.connect();
             System.out.println("연결성공");
             Log.d("SOCKET", "Connection success : " + mSocket.id());
 
-            mSocket.on("response_data", new Emitter.Listener() {//데이터 받는 이벤트
+            mSocket.on("response_bio_data", new Emitter.Listener() {//데이터 받는 이벤트
                 @Override
                 public void call(Object... args) {
                     try{
@@ -121,13 +127,14 @@ public class ChartActivity extends AppCompatActivity {
                     }
                 }
             });
-            mSocket.on("patient_info", new Emitter.Listener() {//데이터 받는 이벤트
+            mSocket.on("response_user_info", new Emitter.Listener() {//데이터 받는 이벤트
                 @Override
                 public void call(Object... args) {
                     try{
                         JSONObject data=(JSONObject) args[0];
                         admin_name=(data.getString("admin_name"));
                         patient_name=(data.getString("patient_name"));
+                        Log.d("name","name!!!: "+patient_name);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -151,7 +158,7 @@ public class ChartActivity extends AppCompatActivity {
                     }
                 }
             });
-            mSocket.emit("web_request_user_info",patient_id);
+            mSocket.emit("request_user_info",patient_id);
         } catch (Exception e) {
             System.out.println("연결실패");
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
@@ -169,7 +176,7 @@ public class ChartActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mSocket.emit("request_data",data);//서버에 데이터 요청
+        mSocket.emit("request_bio_data",data);//서버에 데이터 요청
 
     }
     void doJSONParser(JSONArray index){//서버로 부터 받은 jsonobject에서 파싱
@@ -180,7 +187,7 @@ public class ChartActivity extends AppCompatActivity {
                 for (int i = 0; i < index.length(); i++) {
                     JSONObject jsonObject_data = index.getJSONObject(i);
                     entryList1.add(new Entry(time,Integer.parseInt(jsonObject_data.getString("HeartRate"))));
-                    entryList2.add(new Entry(time,Float.parseFloat(jsonObject_data.getString("Temperature"))));
+                    //entryList2.add(new Entry(time,Float.parseFloat(jsonObject_data.getString("Temperature"))));
                     entryList3.add(new Entry(time,Integer.parseInt(jsonObject_data.getString("Spo2"))));
                     time++;
                     String[]arr=jsonObject_data.getString("TIME").split(" ");
