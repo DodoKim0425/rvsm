@@ -171,7 +171,7 @@ public class ChartActivity extends AppCompatActivity {
         System.out.println("보낼시간: "+last_time);
         try {
             data.put("time",last_time);
-            data.put("user_name","PATIENT_STATE");
+            data.put("patientID",patient_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
