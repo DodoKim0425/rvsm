@@ -185,16 +185,21 @@ public class SignupActivity extends AppCompatActivity {
         signup_btn.setOnClickListener(new View.OnClickListener() {  //회원가입 버튼 누른 경우
             @Override
             public void onClick(View v) {
+                String id=et_id.getText().toString();
+                String passwd=et_pass.getText().toString();
+
                 if(!check){ //환자 정보 확인 버튼 false
                     Toast.makeText(SignupActivity.this, "환자 정보 학인이 필요합니다.", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(id.equals("")||passwd.equals("")){
+                    Toast.makeText(SignupActivity.this, "아이디, 패스워드를 작성해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
                     if (socket != null) {
                         JSONObject data = new JSONObject();
                         try {
                             System.out.println("사용자 token = " + token);
                             System.out.println("icheck"+icheck);
-                            data.put("id", et_id.getText().toString());
-                            data.put("passwd", et_pass.getText().toString());
+                            data.put("id", id);
+                            data.put("passwd", passwd);
                             data.put("h_code", et_hcode.getText().toString());
                             data.put("p_code", et_pcode.getText().toString());
                             data.put("token",token);
