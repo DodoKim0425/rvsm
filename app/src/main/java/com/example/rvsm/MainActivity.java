@@ -1,5 +1,6 @@
 package com.example.rvsm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
+    public static Context context;
+    public String msg;
     private Button main_signup_btn,main_login_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), SignupActivity.class);
+                intent.putExtra("token", msg);
                 startActivity(intent);
             }
         });
@@ -45,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("TAG","fetching FCM registration token failed",task.getException());
                             return;
                         }
-                        String msg=task.getResult();
+                        msg=task.getResult();
                         Log.println(Log.INFO,"token!!!:",msg);
-
                     }
                 });
     }

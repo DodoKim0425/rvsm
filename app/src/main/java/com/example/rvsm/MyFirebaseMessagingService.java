@@ -21,12 +21,13 @@ import com.google.firebase.messaging.RemoteMessage;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG="FirebaseMsgService";
     private String msg,title;
+    public static Context context;
+    String utoken;
     @Override
     public void onNewToken(@NonNull String token) {//토큰을 새로 만들면 토큰 출력
         super.onNewToken(token);
-
         Log.d("tag", "Refreshed token!!!!!!!: " + token);
-
+        //utoken=token;
     }
 
     @Override

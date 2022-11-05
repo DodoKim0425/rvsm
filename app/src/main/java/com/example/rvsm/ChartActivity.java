@@ -50,7 +50,8 @@ public class ChartActivity extends AppCompatActivity {
     private String last_time;
     private ArrayList<String> xVals;//x축 날짜, 시간
     private ImageButton chart_back_btn;
-    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
+    private URI uri = URI.create("http://172.30.1.2:3333");
+    //private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
     //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
     private IO.Options options;
     @Override
@@ -60,9 +61,6 @@ public class ChartActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_chart);
-
-
-
         chart_back_btn=findViewById(R.id.chart_back_btn);
         tv_admin=findViewById(R.id.tv_admin);
         tv_patient_name=findViewById(R.id.tv_patient_name);

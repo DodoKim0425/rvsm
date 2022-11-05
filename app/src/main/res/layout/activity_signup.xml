@@ -3,29 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    android:orientation="vertical"
-
-    >
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        >
+        android:layout_height="80dp">
         <ImageButton
             android:id="@+id/signup_back_btn"
             android:layout_gravity="center_vertical"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginLeft="10dp"
             android:scaleType="fitCenter"
             android:background="#00ffffff"
-            android:src="@drawable/back"/>
+            android:src="@drawable/back"
+            />
     </LinearLayout>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:src="@drawable/rvsm_logo"/>
-
 
     <LinearLayout
         android:layout_marginTop="30dp"
@@ -42,15 +39,18 @@
             android:textColor="#BBDCFB"
             android:textStyle="bold"
             />
+
         <EditText
             android:id="@+id/signup_id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
-            android:textColor="#A0CBF4"
             android:gravity="center"
+            android:textColor="#A0CBF4"
             android:textStyle="bold"
-            />
+            android:inputType="text"
+            android:maxLines="1"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:textColor="#BBDCFB"
             />
         <EditText
-            android:id="@+id/signup_code_tv"
+            android:id="@+id/signup_h_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#BBDCFB"
@@ -86,7 +86,33 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColorHint="#CDCDCD"
-            android:hint="병원 혹은 환자코드 입력"
+            android:hint="병원코드"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+        <EditText
+            android:id="@+id/signup_p_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#BBDCFB"
+            android:textColor="#A0CBF4"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColorHint="#CDCDCD"
+            android:hint="환자코드"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+        <Button
+            android:id="@+id/bt_check"
+            android:layout_width="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#C8E3FB"
+            android:text="환자 정보 확인"
+            android:textSize="5pt"
+            android:textColor="#ffffff"
             />
         <Button
             android:id="@+id/signup_btn"

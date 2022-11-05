@@ -47,6 +47,8 @@
             android:textColor="#A0CBF4"
             android:gravity="center"
             android:textStyle="bold"
+            android:inputType="text"
+            android:maxLines="1"
             />
     </LinearLayout>
     <LinearLayout
@@ -73,6 +75,7 @@
             android:textColor="#A0CBF4"
             android:gravity="center"
             android:textStyle="bold"
+            android:maxLines="1"
             />
     </LinearLayout>
     <Button
