@@ -2,6 +2,7 @@ package com.example.rvsm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,21 +51,22 @@ public class ChartActivity extends AppCompatActivity {
     private String last_time;
     private ArrayList<String> xVals;//x축 날짜, 시간
     private ImageButton chart_back_btn;
-    private URI uri = URI.create("http://172.30.1.2:3333");
-    //private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
+    //private URI uri = URI.create("http://172.30.1.2:3333");
+    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
     //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
     private IO.Options options;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_chart);
+
+        Intent intent=getIntent();
+        patient_id=intent.getStringExtra("patientID");
+
         chart_back_btn=findViewById(R.id.chart_back_btn);
         tv_admin=findViewById(R.id.tv_admin);
         tv_patient_name=findViewById(R.id.tv_patient_name);
-        patient_id="test1";
+
         lineChart=findViewById(R.id.lineChart);
         entryList1=new ArrayList<Entry>();
         entryList2=new ArrayList<Entry>();
@@ -216,7 +218,7 @@ public class ChartActivity extends AppCompatActivity {
 
             YAxis yAxis=lineChart.getAxisLeft();
             yAxis.setAxisMinimum(0);
-            yAxis.setAxisMaximum(110);
+            //yAxis.setAxisMaximum(110);
             dataSet1=new LineDataSet(entryList1,"HeartRate");//선모양을 정해주는 데이터를 넣음
 
             //dataSet2=new LineDataSet(entryList2,"Temperature");
@@ -266,16 +268,19 @@ public class ChartActivity extends AppCompatActivity {
             }
         };
         thread = new Thread(new Runnable() {
-            @Override public void run() {
-                while (true) {
-                    if(mSocket!=null){
-                        runOnUiThread(runnable);
+            @Override
+            public void run() {
+                try{
+                    while (true) {
+                        if(mSocket!=null){
+                            runOnUiThread(runnable);
+                        }
+                        Thread.sleep(1000);//1초에 한번씩 데이터 불러옴
+
                     }
-                    try {
-                        Thread.sleep(3000);//3초에 한번씩 데이터 불러옴
-                    } catch (InterruptedException ie) {
-                        ie.printStackTrace();
-                    }
+                }catch (InterruptedException e){
+                    System.out.println("인터럽트 발생");
+                    e.printStackTrace();
                 }
             }
         });
