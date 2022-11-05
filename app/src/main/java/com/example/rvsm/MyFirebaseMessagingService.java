@@ -63,12 +63,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationBuilder
-                .setSmallIcon(R.drawable.ic_launcher_foreground)//알람에 표시될 아이콘
+                .setSmallIcon(R.drawable.rvsm_no_logo_blue)//알람에 표시될 아이콘
                 .setContentTitle(title)//알람제목
                 .setContentText(msg)//알람 본문
                 .setAutoCancel(true)//선택시 알람 자동삭제
                 .setSound(uri)//알람소리
-                .setVibrate(new long[]{1,1000})//1은wait시간,1000밀리세컨드=1초 동안 진동
+                .setVibrate(new long[]{1,4000})//1은wait시간,1000밀리세컨드=1초 동안 진동
                 .setShowWhen(true)//알림이 언제 왔는지 표기
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
         ;
