@@ -77,8 +77,8 @@ public class ChartActivity extends AppCompatActivity {
         Date date=new Date(cal.getTimeInMillis());
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String getTime=dateFormat.format(date);
-        //last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다 실제 테스트시 이 부분 사용함
-        last_time="2022-06-11 12:30:26";//aws 서버 db연결 테스트를 위한 임시코드입니다
+        last_time=getTime;//최초 연결시 현재 시간 기준으로 5초 전 데이터까지 가져온다 실제 테스트시 이 부분 사용함
+        //last_time="2022-06-11 12:30:26";//aws 서버 db연결 테스트를 위한 임시코드입니다
         System.out.println("현재시간-5: "+last_time);
 
         options=new IO.Options();
@@ -191,6 +191,12 @@ public class ChartActivity extends AppCompatActivity {
                     time++;
                     String[]arr=jsonObject_data.getString("TIME").split(" ");
                     xVals.add(arr[1]);
+                    if(entryList1.size()>12){
+                        entryList1.remove(0);
+                        //entryList2.remove(0);
+                        entryList3.remove(0);
+                    }
+
                 /*if(i==(index.length()-1)){
                     last_time=jsonObject_data.getString("TIME");
                 }*/
@@ -218,7 +224,7 @@ public class ChartActivity extends AppCompatActivity {
 
             YAxis yAxis=lineChart.getAxisLeft();
             yAxis.setAxisMinimum(0);
-            //yAxis.setAxisMaximum(110);
+            //yAxis.setAxisMaximum(200);
             dataSet1=new LineDataSet(entryList1,"HeartRate");//선모양을 정해주는 데이터를 넣음
 
             //dataSet2=new LineDataSet(entryList2,"Temperature");
@@ -250,9 +256,8 @@ public class ChartActivity extends AppCompatActivity {
 
             lineChart.setData(chartData);//그래프위에 선들을 나타냄
 
-            lineChart.setVisibleXRangeMaximum(6);//한 그래프위에 6개의 데이터만 보이도록함
-
-            lineChart.moveViewToX(dataSet1.getEntryCount());//x축을 가장 최근값이 보이도록 옮김, 가장 최근의 20개만 보이게됨
+            lineChart.setVisibleXRangeMaximum(10);//한 그래프위에 10개의 데이터만 보이도록함
+            lineChart.moveViewToX(time);//x축을 가장 최근값이 보이도록 옮김, 가장 최근의 20개만 보이게됨
 
         }catch (Exception e){
             System.out.println("그리는데 문제가 생김");
