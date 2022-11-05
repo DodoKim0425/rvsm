@@ -2,9 +2,12 @@ package com.example.rvsm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import com.github.mikephil.charting.charts.Chart;
 import org.json.JSONObject;
 
 import java.io.Console;
+import java.net.URI;
 import java.net.URL;
 
 import io.socket.client.IO;
@@ -33,6 +37,9 @@ public class SignupActivity extends AppCompatActivity {
     private boolean check;
     private String token;
     private IO.Options option;
+    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
+    //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,8 @@ public class SignupActivity extends AppCompatActivity {
         et_pcode = findViewById(R.id.signup_p_code);
         check_btn = findViewById(R.id.bt_check);
         et_hcode.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        option = new IO.Options();
+        option.transports = new String[]{"websocket"};
 
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
@@ -66,7 +75,7 @@ public class SignupActivity extends AppCompatActivity {
 //            int port = 3333;
 //            URL url = new URL("http", host, port, "/");
 //            socket = IO.socket(url.toURI());
-            socket = IO.socket("http://172.30.1.2:3333",option);
+            socket = IO.socket(uri,option);
             socket.connect();
             socket.on("check", new Emitter.Listener() {
                 @Override
@@ -81,6 +90,10 @@ public class SignupActivity extends AppCompatActivity {
                                 if(pcheck.equals("true")){
                                     check = true;
                                     Toast.makeText(SignupActivity.this, "환자 정보가 확인되었습니다.", Toast.LENGTH_SHORT).show();
+                                    et_hcode.setEnabled(false);
+                                    et_hcode.setBackgroundColor(Color.rgb(202,202,202));
+                                    et_pcode.setEnabled(false);
+                                    et_pcode.setBackgroundColor(Color.rgb(202,202,202));
                                 }else if(pcheck.equals("false")){
                                     Toast.makeText(SignupActivity.this, "해당 환자가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                                 }
@@ -196,6 +209,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override
