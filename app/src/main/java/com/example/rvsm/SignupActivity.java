@@ -37,7 +37,7 @@ public class SignupActivity extends AppCompatActivity {
     private boolean check;
     private String token;
     private IO.Options option;
-    //private URI uri= URI.create("http://192.168.219.196:3333");//로컬테스팅용
+    //private URI uri= URI.create("http://192.168.35.61:3333");//로컬테스팅용
     private URI uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
     //private URI uri= URI.create(BuildConfig.LOCAL_URL);//local
 
@@ -61,7 +61,6 @@ public class SignupActivity extends AppCompatActivity {
         signup_back_btn.setOnClickListener(new View.OnClickListener() {//뒤로가기 버튼
             @Override
             public void onClick(View view) {
-                socket.disconnect();
                 finish();
             }
         });
@@ -221,7 +220,6 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.emit("disconnected", null);
         socket.disconnect();
     }
 }

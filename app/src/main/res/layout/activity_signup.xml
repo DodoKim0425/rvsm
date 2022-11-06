@@ -10,8 +10,8 @@
         <ImageButton
             android:id="@+id/signup_back_btn"
             android:layout_gravity="center_vertical"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:scaleType="fitCenter"
             android:background="#00ffffff"
