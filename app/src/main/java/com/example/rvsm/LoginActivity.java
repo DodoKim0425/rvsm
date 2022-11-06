@@ -39,8 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     private Socket socket;
     private IO.Options option;
     private int lcheck;
-    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
-    //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
+   // private URI uri= URI.create("http://192.168.219.196:3333");//로컬테스팅용
+    private URI uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
+    //private URI uri= URI.create(BuildConfig.LOCAL_URL);//local
+
     private String token="";
 
     @Override

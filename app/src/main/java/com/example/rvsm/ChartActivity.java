@@ -52,7 +52,11 @@ public class ChartActivity extends AppCompatActivity {
     private ArrayList<String> xVals;//x축 날짜, 시간
     private ImageButton chart_back_btn;
     //private URI uri = URI.create("http://172.30.1.2:3333");
-    private URI uri= URI.create(BuildConfig.LOCAL_URL);//로컬테스팅용
+    //private URI uri= URI.create("http://192.168.219.196:3333");//로컬테스팅용
+    //private URI uri= URI.create(BuildConfig.LOCAL_URL);//local
+    private URI uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
+
+
     //private URL uri= URI.create(BuildConfig.SERVER_URL);//실제 서버사용할때 씀
     private IO.Options options;
     @Override
@@ -182,14 +186,14 @@ public class ChartActivity extends AppCompatActivity {
 
         try{
 
-                last_time=index.getJSONObject(index.length()-1).getString("TIME");
+                last_time=index.getJSONObject(index.length()-1).getString("Time");
                 for (int i = 0; i < index.length(); i++) {
                     JSONObject jsonObject_data = index.getJSONObject(i);
-                    entryList1.add(new Entry(time,Integer.parseInt(jsonObject_data.getString("HeartRate"))));
+                    entryList1.add(new Entry(time,Float.parseFloat(jsonObject_data.getString("HeartRate"))));
                     //entryList2.add(new Entry(time,Float.parseFloat(jsonObject_data.getString("Temperature"))));
                     entryList3.add(new Entry(time,Integer.parseInt(jsonObject_data.getString("Spo2"))));
                     time++;
-                    String[]arr=jsonObject_data.getString("TIME").split(" ");
+                    String[]arr=jsonObject_data.getString("Time").split(" ");
                     xVals.add(arr[1]);
                     if(entryList1.size()>12){
                         entryList1.remove(0);
